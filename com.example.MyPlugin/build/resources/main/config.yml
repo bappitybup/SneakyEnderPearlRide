@@ -8,3 +8,6 @@ particle-trail:
 wind-sound:
   enabled: true
   volume: 0.3
+velocity-multiplier:
+  enabled: true
+  multiplier: 1.2

@@ -205,11 +205,16 @@ public void onPlayerTeleport(PlayerTeleportEvent event) {
                     player.stopSound(Sound.ITEM_ELYTRA_FLYING);
                 }
 
+                final double customPearlVelocityMultiplier = new ConfigValueGrabber<Double>(_config).getCustomConfigValue(Double.class, "velocity-multiplier.enabled", "velocity-multiplier.multiplier", 0.0);
+
                 // Launch a new EnderPearl projectile
                 EnderPearl pearl = player.launchProjectile(EnderPearl.class);
-                Vector currentVelocity = pearl.getVelocity();
-                Vector doubledVelocity = currentVelocity.multiply(1.2);
-                pearl.setVelocity(doubledVelocity);
+
+                if (customPearlVelocityMultiplier != 0) {
+                    Vector currentVelocity = pearl.getVelocity();
+                    Vector doubledVelocity = currentVelocity.multiply(customPearlVelocityMultiplier);
+                    pearl.setVelocity(doubledVelocity);
+                }
 
                 // Add the player as a passenger on the EnderPearl
                 pearl.addPassenger(player);
