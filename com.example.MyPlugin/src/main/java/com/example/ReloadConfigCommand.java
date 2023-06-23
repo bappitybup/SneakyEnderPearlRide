@@ -33,6 +33,7 @@ public class ReloadConfigCommand implements CommandExecutor {
 
     private void reloadAndNotify(Player player) {
         _plugin.reloadConfig();
+        _plugin.reloadEnderPearlRide();
         _plugin.reloadAllEventClasses(_plugin.getConfig());
         String reloadMessage = "§aConfiguration reloaded successfully!";
 

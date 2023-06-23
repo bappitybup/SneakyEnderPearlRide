@@ -24,7 +24,7 @@ public class MyPlugin extends JavaPlugin {
         getCommand("island").setExecutor(new IslandCommand());
 
         // Register the event listener in the plugin manager
-        getServer().getPluginManager().registerEvents(new EnderPearlRide(this, config), this);
+        getServer().getPluginManager().registerEvents(_enderPearlRideClass, this);
 
         // This method is called when the plugin is enabled
         getLogger().info("MyPlugin is enabled!");
@@ -37,10 +37,13 @@ public class MyPlugin extends JavaPlugin {
     }
 
     public void reloadAllEventClasses(FileConfiguration config) {
-        HandlerList.unregisterAll(_enderPearlRideClass);
-        
-        _enderPearlRideClass = new EnderPearlRide(this, config);
-        getServer().getPluginManager().registerEvents(_enderPearlRideClass, this);
+        reloadEnderPearlRide();
+    }
+
+    public void reloadEnderPearlRide() {
+        if (_enderPearlRideClass != null) {
+            _enderPearlRideClass.reload();
+        }
     }
 
     public EnderPearlRide getEnderPearlRideClass() {

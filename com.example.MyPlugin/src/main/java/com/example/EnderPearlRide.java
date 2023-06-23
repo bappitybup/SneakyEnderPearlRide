@@ -52,6 +52,8 @@ public class EnderPearlRide implements Listener {
     // Referencing the main plugin config.yml
     private FileConfiguration _config;
 
+    private boolean _carryLeashedAnimals;
+
     /**
      * EnderPearlRide constructor.
      *
@@ -67,6 +69,7 @@ public class EnderPearlRide implements Listener {
 
     private void loadConfigValues() {
         _config = _plugin.getConfig();
+        _carryLeashedAnimals = _config.getBoolean("carry-leashed-animals", true); // Default to true if not specified
     }
 
     public void reload() {
@@ -130,8 +133,10 @@ public void onPlayerTeleport(PlayerTeleportEvent event) {
         // Stop the flying sound for the player
         player.stopSound(Sound.ITEM_ELYTRA_FLYING);
 
-        // Detach leashed entities and re-leash them
-        detachLeashedEntities(player);
+        if (_carryLeashedAnimals) {
+            // Detach leashed entities and re-leash them
+            detachLeashedEntities(player);
+        }
     }
 }
 
@@ -228,8 +233,10 @@ public void onPlayerTeleport(PlayerTeleportEvent event) {
                 // Add the player as a passenger on the EnderPearl
                 pearl.addPassenger(player);
 
-                // Attach leashed entities to the player and un-leash them
-                attachLeashedEntities(player);
+                if (_carryLeashedAnimals) {
+                    // Attach leashed entities to the player and un-leash them
+                    attachLeashedEntities(player);
+                }
 
                 final int customParticleCount = new ConfigValueGrabber<Integer>(_config).getCustomConfigValue(Integer.class, "particle-trail.enabled", "particle-trail.count", 0);
                 final int customOffsetX = new ConfigValueGrabber<Integer>(_config).getCustomConfigValue(Integer.class, "particle-trail.enabled", "particle-trail.offsetX", 0);

@@ -11,3 +11,4 @@ wind-sound:
 velocity-multiplier:
   enabled: true
   multiplier: 1.2
+carry-leashed-animals: true
