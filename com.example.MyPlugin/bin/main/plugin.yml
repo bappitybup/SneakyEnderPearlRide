@@ -6,3 +6,6 @@ commands:
   island:
     description: Generate a floating island
     usage: /island
+  reloadsneaky:
+    description: Reloads the configuration for MyPlugin.
+    usage: /reloadsneaky

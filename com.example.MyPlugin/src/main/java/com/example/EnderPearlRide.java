@@ -50,7 +50,7 @@ public class EnderPearlRide implements Listener {
     private final MyPlugin _plugin;
 
     // Referencing the main plugin config.yml
-    private final FileConfiguration _config;
+    private FileConfiguration _config;
 
     /**
      * EnderPearlRide constructor.
@@ -62,6 +62,15 @@ public class EnderPearlRide implements Listener {
         _playerDismountStateMap = new HashMap<>();
         _plugin = plugin;
         _config = config;
+        loadConfigValues();
+    }
+
+    private void loadConfigValues() {
+        _config = _plugin.getConfig();
+    }
+
+    public void reload() {
+        loadConfigValues();
     }
 
     /**
