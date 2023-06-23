@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -19,13 +18,13 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerUnleashEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.bukkit.event.block.Action;
@@ -103,20 +102,24 @@ public class EnderPearlRide implements Listener {
         }
     }
 
-    /**
-     * This function stops the flying sound when the teleport ends, to fix a bug
-     * if a player throws a normal pearl before throwing a riding pearl
-     * @param event The PlayerTeleportEvent being handled.
-     */
-    @EventHandler
-    public void onPlayerTeleport(PlayerTeleportEvent event) {
-        // Check if the teleport cause is due to an Enderpearl
-        if (event.getCause() == PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
-            Player player = event.getPlayer();
-            // Stop the flying sound for the player
-            player.stopSound(Sound.ITEM_ELYTRA_FLYING);
-        }
+/**
+ * This function stops the flying sound when the teleport ends, and detaches the leashed entities.
+ *
+ * @param event The PlayerTeleportEvent being handled.
+ */
+@EventHandler
+public void onPlayerTeleport(PlayerTeleportEvent event) {
+    // Check if the teleport cause is due to an Enderpearl
+    if (event.getCause() == PlayerTeleportEvent.TeleportCause.ENDER_PEARL) {
+        Player player = event.getPlayer();
+
+        // Stop the flying sound for the player
+        player.stopSound(Sound.ITEM_ELYTRA_FLYING);
+
+        // Detach leashed entities and re-leash them
+        detachLeashedEntities(player);
     }
+}
 
     /**
      * Handles the EntityDismountEvent when players attempt to dismount from their EnderPearl vehicle.
@@ -144,6 +147,23 @@ public class EnderPearlRide implements Listener {
         }
     }
 
+    @EventHandler
+    public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+        Entity entity = event.getRightClicked();
+
+        // Check if the entity is riding on the player
+        if (entity.getVehicle() != null && entity.getVehicle().equals(player)) {
+            // Handle the interaction
+            boolean shouldCancel = throwableEnderpearlMain(player, player.getInventory().getItemInMainHand());
+
+            if (shouldCancel) {
+                // Cancel the event to prevent throwing another ender pearl
+                event.setCancelled(true);
+            }
+        }
+    }
+
     /**
      * Handles the PlayerInteractEvent when players launch an EnderPearl while sneaking or riding an EnderPearl.
      *
@@ -155,9 +175,21 @@ public class EnderPearlRide implements Listener {
         Player player = event.getPlayer();
 
         // Check if the player is holding an ender pearl and it's a right-click action
-        if ((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && (player.isSneaking() || player.getVehicle() instanceof EnderPearl)) {
+        if ((event.getAction() == Action.RIGHT_CLICK_AIR || 
+             event.getAction() == Action.RIGHT_CLICK_BLOCK) && 
+             (player.isSneaking() || player.getVehicle() instanceof EnderPearl)) {
+                boolean shouldCancel = throwableEnderpearlMain(player, event.getItem());
+
+                if (shouldCancel) {
+                    // Cancel the event to prevent throwing another ender pearl
+                    event.setCancelled(true);
+                }
+        }
+    }
+
+    private boolean throwableEnderpearlMain(Player player, ItemStack itemGet) {
             // Check if the player is holding an EnderPearl item in hand
-            if (event.getItem() != null && event.getItem().getType() == Material.ENDER_PEARL) {
+            if (itemGet != null && itemGet.getType() == Material.ENDER_PEARL) {
 
                 // Check if the player is already riding an EnderPearl
                 if (player.getVehicle() instanceof EnderPearl) {
@@ -216,7 +248,7 @@ public class EnderPearlRide implements Listener {
 
                 // Remove one ender pearl from the player's inventory if not in creative mode
                 if (player.getGameMode() != GameMode.CREATIVE) {
-                    ItemStack item = event.getItem();
+                    ItemStack item = itemGet;
                     if (item.getAmount() > 1) {
                         item.setAmount(item.getAmount() - 1);
                     } else {
@@ -224,10 +256,10 @@ public class EnderPearlRide implements Listener {
                     }
                 }
 
-                // Cancel the event to prevent throwing another ender pearl
-                event.setCancelled(true);
+                return true;
             }
-        }
+
+            return false;
     }
 
     /**
