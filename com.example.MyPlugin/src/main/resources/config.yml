@@ -1,0 +1,10 @@
+# This is the config.yml file for SneakyEnderPearlRide
+particle-trail:
+  enabled: true
+  count: 100
+  offsetX: 1
+  offsetY: 1
+  offsetZ: 1
+wind-sound:
+  enabled: true
+  volume: 0.3

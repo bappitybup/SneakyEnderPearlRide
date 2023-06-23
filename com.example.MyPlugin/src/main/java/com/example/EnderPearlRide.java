@@ -10,6 +10,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -48,15 +49,19 @@ public class EnderPearlRide implements Listener {
     // Referencing the main plugin
     private final MyPlugin _plugin;
 
+    // Referencing the main plugin config.yml
+    private final FileConfiguration _config;
+
     /**
      * EnderPearlRide constructor.
      *
      * @param leashedEntitiesMap A HashMap linking player UUIDs to lists of leashed entities.
      */
-    public EnderPearlRide(MyPlugin plugin) {
+    public EnderPearlRide(MyPlugin plugin, FileConfiguration config) {
         _leashedEntitiesMap = new HashMap<>();
         _playerDismountStateMap = new HashMap<>();
         _plugin = plugin;
+        _config = config;
     }
 
     /**
@@ -212,6 +217,11 @@ public void onPlayerTeleport(PlayerTeleportEvent event) {
                 // Attach leashed entities to the player and un-leash them
                 attachLeashedEntities(player);
 
+                final int customParticleCount = new ConfigValueGrabber<Integer>(_config).getCustomConfigValue(Integer.class, "particle-trail.enabled", "particle-trail.count", 0);
+                final int customOffsetX = new ConfigValueGrabber<Integer>(_config).getCustomConfigValue(Integer.class, "particle-trail.enabled", "particle-trail.offsetX", 0);
+                final int customOffsetY = new ConfigValueGrabber<Integer>(_config).getCustomConfigValue(Integer.class, "particle-trail.enabled", "particle-trail.offsetY", 0);
+                final int customOffsetZ = new ConfigValueGrabber<Integer>(_config).getCustomConfigValue(Integer.class, "particle-trail.enabled", "particle-trail.offsetZ", 0);
+
                 // Schedule tasks to spawn particle trail and play flying sound while riding EnderPearl
                 BukkitRunnable particleTask = new BukkitRunnable() {
                     @Override
@@ -225,17 +235,23 @@ public void onPlayerTeleport(PlayerTeleportEvent event) {
                             // Spawn particle trail behind EnderPearl
                             Vector offsetVec = pearl.getVelocity().normalize().multiply(-1).multiply(1.0);
                             Location particleLocation = pearl.getLocation().add(offsetVec);
-                            pearl.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, particleLocation, 10, 0, 0, 0, 0);
+                            if (customParticleCount != 0) {
+                                pearl.getWorld().spawnParticle(Particle.CAMPFIRE_COSY_SMOKE, particleLocation, customParticleCount, customOffsetX, customOffsetY, customOffsetZ, 0);
+                            }
                         }
                     }
                 };
+
+                final double customWindVolume = new ConfigValueGrabber<Double>(_config).getCustomConfigValue(Double.class, "wind-sound.enabled", "wind-sound.volume", 0.0);
 
                 BukkitRunnable playSoundTask = new BukkitRunnable() {
                     @Override
                     public void run() {
                         if (!particleTask.isCancelled() && player.isInsideVehicle() && player.getVehicle() instanceof EnderPearl) {
-                            // Play the flying sound for the player
-                            player.playSound(player.getLocation(), Sound.ITEM_ELYTRA_FLYING, 0.3f, 1.0f);
+                            if ((float)customWindVolume != 0f) {
+                                // Play the flying sound for the player
+                                player.playSound(player.getLocation(), Sound.ITEM_ELYTRA_FLYING, (float)customWindVolume, 1.0f);
+                            }
                         } else {
                             this.cancel();
                         }
