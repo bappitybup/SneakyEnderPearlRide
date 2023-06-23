@@ -262,7 +262,7 @@ public void onPlayerTeleport(PlayerTeleportEvent event) {
                     @Override
                     public void run() {
                         if (!particleTask.isCancelled() && player.isInsideVehicle() && player.getVehicle() instanceof EnderPearl) {
-                            if ((float)customWindVolume != 0f) {
+                            if (customWindVolume != 0) {
                                 // Play the flying sound for the player
                                 player.playSound(player.getLocation(), Sound.ITEM_ELYTRA_FLYING, (float)customWindVolume, 1.0f);
                             }
