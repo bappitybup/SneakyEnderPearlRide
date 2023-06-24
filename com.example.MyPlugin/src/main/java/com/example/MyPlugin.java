@@ -1,9 +1,6 @@
 package com.example;
 
-import com.example.island.IslandCommand;
-
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class MyPlugin extends JavaPlugin {
@@ -21,7 +18,6 @@ public class MyPlugin extends JavaPlugin {
         _enderPearlRideClass = new EnderPearlRide(this, config);
 
         getCommand("reloadsneaky").setExecutor(new ReloadConfigCommand(this));
-        getCommand("island").setExecutor(new IslandCommand());
 
         // Register the event listener in the plugin manager
         getServer().getPluginManager().registerEvents(_enderPearlRideClass, this);
