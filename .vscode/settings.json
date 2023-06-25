@@ -3,5 +3,8 @@
     "yaml.schemas": {
         "file:///c%3A/Users/leah/.vscode/extensions/docsmsft.docs-yaml-1.0.0/dist/toc.schema.json": "/toc\\.yml/i",
         "https://json.schemastore.org/bukkit-plugin.json": "file:///c%3A/Users/leah/Desktop/repos/SneakyEnderPearlRide/net.bappity.SneakyEnderPearlRide/src/main/resources/plugin.yml"
-    }
+    },
+    "cSpell.words": [
+        "bappity"
+    ]
 }
