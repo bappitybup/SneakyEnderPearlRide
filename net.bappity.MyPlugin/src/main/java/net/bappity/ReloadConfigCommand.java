@@ -6,9 +6,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class ReloadConfigCommand implements CommandExecutor {
-    private final MyPlugin _plugin;
+    private final SneakyEnderPearlRide _plugin;
 
-    public ReloadConfigCommand(MyPlugin plugin) {
+    public ReloadConfigCommand(SneakyEnderPearlRide plugin) {
         _plugin = plugin;
     }
 
@@ -19,7 +19,7 @@ public class ReloadConfigCommand implements CommandExecutor {
             Player player = (Player) sender;
 
             // Check if the player has permission to reload the config
-            if (player.hasPermission("myplugin.reloadsneaky")) {
+            if (player.hasPermission("SneakyEnderPearlRide.reloadsneaky")) {
                 reloadAndNotify(player);
             } else {
                 player.sendMessage("§cYou do not have permission to use this command.");

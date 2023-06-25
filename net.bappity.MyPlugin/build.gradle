@@ -29,5 +29,5 @@ shadowJar {
 }
 
 application {
-    mainClass = 'net.bappity.MyPlugin'
+    mainClass = 'net.bappity.SneakyEnderPearlRide'
 }

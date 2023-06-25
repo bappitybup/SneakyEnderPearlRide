@@ -1,7 +1,7 @@
 @if "%DEBUG%" == "" @echo off
 @rem ##########################################################################
 @rem
-@rem  net.bappity.MyPlugin startup script for Windows
+@rem  net.bappity.SneakyEnderPearlRide startup script for Windows
 @rem
 @rem ##########################################################################
 
@@ -63,9 +63,9 @@ set CMD_LINE_ARGS=%*
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\net.bappity.MyPlugin-1.0-SNAPSHOT.jar
+set CLASSPATH=%APP_HOME%\lib\net.bappity.SneakyEnderPearlRide-1.0-SNAPSHOT.jar
 
-@rem Execute net.bappity.MyPlugin
+@rem Execute net.bappity.SneakyEnderPearlRide
 "%JAVA_EXE%" %DEFAULT_JVM_OPTS% %JAVA_OPTS% %COM_EXAMPLE_MY_PLUGIN_OPTS%  -jar "%CLASSPATH%" %CMD_LINE_ARGS%
 
 :end

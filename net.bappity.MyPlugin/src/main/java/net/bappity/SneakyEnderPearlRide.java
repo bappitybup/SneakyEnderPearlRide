@@ -3,7 +3,7 @@ package net.bappity;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class MyPlugin extends JavaPlugin {
+public class SneakyEnderPearlRide extends JavaPlugin {
 
     private EnderPearlRide _enderPearlRideClass;
 
@@ -24,13 +24,13 @@ public class MyPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(_enderPearlRideClass, this);
 
         // This method is called when the plugin is enabled
-        getLogger().info("MyPlugin is enabled!");
+        getLogger().info("SneakyEnderPearlRide is enabled!");
     }
 
     @Override
     public void onDisable() {
         // This method is called when the plugin is disabled
-        getLogger().info("MyPlugin is disabled!");
+        getLogger().info("SneakyEnderPearlRide is disabled!");
     }
 
     public void reloadAllEventClasses(FileConfiguration config) {

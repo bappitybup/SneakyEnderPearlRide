@@ -51,7 +51,7 @@ public class EnderPearlRide implements Listener {
     private final AtomicReference<BukkitRunnable> soundLoopTask = new AtomicReference<>();
 
     // Referencing the main plugin
-    private final MyPlugin _plugin;
+    private final SneakyEnderPearlRide _plugin;
 
     // Referencing the main plugin config.yml
     private FileConfiguration _config;
@@ -64,7 +64,7 @@ public class EnderPearlRide implements Listener {
      * @param leashedEntitiesMap A HashMap linking player UUIDs to lists of leashed
      *                           entities.
      */
-    public EnderPearlRide(MyPlugin plugin, FileConfiguration config) {
+    public EnderPearlRide(SneakyEnderPearlRide plugin, FileConfiguration config) {
         _leashedEntitiesMap = new HashMap<>();
         _playerDismountStateMap = new HashMap<>();
         _plugin = plugin;

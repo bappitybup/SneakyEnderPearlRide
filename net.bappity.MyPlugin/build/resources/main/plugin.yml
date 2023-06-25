@@ -1,11 +1,11 @@
-name: MyPlugin
+name: SneakyEnderPearlRide
 version: 1.0
-main: net.bappity.MyPlugin
+main: net.bappity.SneakyEnderPearlRide
 api-version: '1.20'
 commands:
   island:
     description: Generate a floating island
     usage: /island
   reloadsneaky:
-    description: Reloads the configuration for MyPlugin.
+    description: Reloads the configuration for SneakyEnderPearlRide.
     usage: /reloadsneaky
