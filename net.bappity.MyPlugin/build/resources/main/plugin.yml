@@ -3,9 +3,8 @@ version: 1.0
 main: net.bappity.SneakyEnderPearlRide
 api-version: '1.20'
 commands:
-  island:
-    description: Generate a floating island
-    usage: /island
-  reloadsneaky:
-    description: Reloads the configuration for SneakyEnderPearlRide.
-    usage: /reloadsneaky
+  sneaky:
+    description: Main command for the Sneak Ender Pearl Ride plugin
+    usage: /sneaky <sub-command>
+    permission: SneakyEnderPearlRide.use
+    aliases: []

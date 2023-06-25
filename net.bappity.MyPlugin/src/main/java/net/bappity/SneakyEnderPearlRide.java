@@ -18,7 +18,8 @@ public class SneakyEnderPearlRide extends JavaPlugin {
 
         _enderPearlRideClass = new EnderPearlRide(this, config);
 
-        getCommand("reloadsneaky").setExecutor(new ReloadConfigCommand(this));
+        getCommand("sneaky").setExecutor(new SneakyCommand(this));
+        getCommand("sneaky").setTabCompleter(new MyTabCompleter());
 
         // Register the event listener in the plugin manager
         getServer().getPluginManager().registerEvents(_enderPearlRideClass, this);
